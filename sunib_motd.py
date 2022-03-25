@@ -11,8 +11,15 @@ load_dotenv()
 
 if __name__ == "__main__":
     bm = bimay.bimay(token=os.getenv("TOKEN"), roleId=os.getenv("ROLEID"))
-    today = bm.get_schedule_date(datetime.datetime.now())
-    rich.print("Today's Schedule:\n")
+    try:
+        today = bm.get_schedule_date(datetime.datetime.now())
+        rich.print("Today's Schedule:\n")
+    except:
+        try:
+            today = bm.get_schedule_date(datetime.datetime.now() + datetime.timedelta(days=1)) 
+            rich.print("Tomorrow's Schedule:\n")
+        except:
+            rich.print("No Schedule for Today or Tomorrow. Go watch anime or something")
     for i in range(len(today)):
         class_title = today[i]["content"]
         classSessionId = today[i]["customParam"]["classSessionId"]
